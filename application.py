@@ -48,12 +48,14 @@ def check(): #there teh program will ask if user want enter a new countrie
 
 def country_and_capital():
     verific = False
-    verific_Capital = False
+#    verific_Capital = False
     while verific == False:
         country = insert_country()
         if len(country) == 0:
+            return country
             print "Try again."
         else:
+            verific_Capital = False
             Word = verific_country_and_capital(country)
             if Word == True:
                 verific = True
