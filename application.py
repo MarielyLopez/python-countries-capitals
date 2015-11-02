@@ -8,7 +8,6 @@ import time
 countries_capitals = {}
 list_mails = []
 
-
 def insert_country():
     """Here is for that user enter a country for after save a list or dictionary"""
     country = raw_input("Insert a country, please: ")
@@ -17,12 +16,14 @@ def insert_country():
 
 def verific_country_and_capital(country):
     validname = True
-    for count_ in country:
-        if count_.isalpha() == True or count_ == " " or count_ == ".":
-            pass
-        else:
-            validname = False
+    if country.isdigit() == False:
+        pass
+    else:
+        validname = False
+
     return validname
+
+
 
 def insert_capital():
     #Here is for that user enter a country for after save a list or dictionary
@@ -31,19 +32,39 @@ def insert_capital():
     #verific_capital(capital)
     return capital
 
-def check(): #there teh program will ask if user want enter a new countrie
+def ingresa():
     CheckAnswer = False
-    while CheckAnswer == False:
+    while CheckAnswer == False: 
         answer = raw_input("do you want insert more countries an capitals? y - n: ")
         answer = answer.lower()
-        if answer == "y" or answer == "yes":
-            CheckAnswer = True
-            return False
-        elif answer == "n" or answer == "no":
+        Verific = check(answer)
+        if Verific == True:
+            CheckAnswer = False
+            break
+        elif Verific == False:
             Chek = True
             CheckAnswer = True
         else:
-            print "Unrecognized option.Try again."
+            print "no valido"
+    return Verific
+
+
+def check(answer): #there teh program will ask if user want enter a new countrie
+    if answer == "y" or answer == "yes":
+        return False
+    elif answer == "n" or answer == "no":
+        return True
+    else:
+        pass
+
+
+
+def function():
+    Chek = False
+    while Chek == False:
+        country_and_capital()
+        Chek = ingresa()
+
 
 
 def country_and_capital():
@@ -72,11 +93,7 @@ def country_and_capital():
                             return True
 
 
-def function():
-    Chek = False
-    while Chek == False:
-        country_and_capital()
-        Chek = check()
+
 
 
 
@@ -231,7 +248,6 @@ def Menu():
         else:
             print "Unrecognized option.Try again."
             
-
 
 if __name__ == '__main__':
     Menu()
