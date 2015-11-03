@@ -4,6 +4,8 @@ import os
 import sys
 import getpass
 import smtplib
+from email.MIMEMultipart import MIMEMultipart
+from email.MIMEText import MIMEText
 import time
 countries_capitals = {}
 list_mails = []
@@ -20,10 +22,7 @@ def verific_country_and_capital(country):
         pass
     else:
         validname = False
-
     return validname
-
-
 
 def insert_capital():
     #Here is for that user enter a country for after save a list or dictionary
@@ -48,7 +47,6 @@ def ingresa():
             print "no valido"
     return Verific
 
-
 def check(answer): #there teh program will ask if user want enter a new countrie
     if answer == "y" or answer == "yes":
         return False
@@ -57,15 +55,11 @@ def check(answer): #there teh program will ask if user want enter a new countrie
     else:
         pass
 
-
-
 def function():
     Chek = False
     while Chek == False:
         country_and_capital()
         Chek = ingresa()
-
-
 
 def country_and_capital():
     verific = False
@@ -91,11 +85,6 @@ def country_and_capital():
                             verific = True
                             verific_Capital = True
                             return True
-
-
-
-
-
 
 def clear():
     """Cleans the data on screen."""
@@ -124,43 +113,43 @@ def list_of_mails():
             else:
                 print "Your answer is incorrect. Try again."
 
-
 def create_mail():
     list_of_mails()
     user = raw_input("Transmitter: ")
     password = getpass.getpass("Enter password: ")
-    print "Loading  ... Please wait ..."
+
     message = "Country\t-\tCapital\n"
     for capit_ in countries_capitals:
         message = message + str(capit_) +"\t-\t"+ str(countries_capitals[capit_]) + "\n"
     mail = SendMail(list_mails, user, password, message)
     time.sleep(3)
 
-
-
 def SendMail(recipient, user, password, message):
-            recipient = recipient
-            user = user
-            password = password
-            message = message
-#       def enviar(self):
-            for unknownmail in list_mails:
-                try: #intentar mandar el correo
-                    from_add = user
-                    to_adds  = unknownmail
-                    msg = message
-                    username = user
-                    password = password
-                    server = smtplib.SMTP('smtp.gmail.com:587')
-                    server.ehlo()
-                    server.starttls()
-                    server.login(username,password)
-                    server.sendmail(from_add, to_adds, msg)
-                    server.quit()
-                    print "Mail sent successfully to",unknownmail,"!"
-                except (smtplib.SMTPAuthenticationError): #mostrar error si se fallo validacion de usuario/password
-                    print "Your User Name and Password are invalid."
+    recipient = recipient
+    user = user
+    password = password
+    message = message
 
+#       def enviar(self):
+    for unknownmail in list_mails:
+        try: #intentar mandar el correo
+            to_adds  = unknownmail
+            msg = MIMEMultipart()
+            msg['From'] = user
+            msg['To'] = to_adds
+            msg['Subject'] = "Countries and capitals by Maria"
+            msg.attach(MIMEText(message, 'plain'))
+                   # from_add = user
+            #username = user
+            server = smtplib.SMTP('smtp.gmail.com:587')
+            server.starttls()
+            server.login(user, password)
+            text = msg.as_string()
+            server.sendmail(user, to_adds, text)
+            server.quit()
+            print "Mail sent successfully to",unknownmail,"!"
+        except (smtplib.SMTPAuthenticationError): #mostrar error si se fallo validacion de usuario/password
+            print "Your User Name and Password are invalid."
 
 def show_counries():
     coun = 0
@@ -211,8 +200,6 @@ def option_user():
     print "7. Exit."
     option = raw_input("Inser a option of 1 to 7: ")
     return option
-
-
 
 """here is for check te answer number for the option its her/he
 for example option one option two option three"""
